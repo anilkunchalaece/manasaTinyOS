@@ -1,0 +1,62 @@
+instructions 
+------------------------------------
+
+installtion command : make xm1000 install.1 bsl/dev/ttyUSB1
+
+Serial Forwarder : java net.tinyos.sf.SerialForwarder -comm serial@DEVICE:telosb
+
+To Dissplay Raw Data :   java net.tinyos.tools.Listen
+
+
+step 1: Connect the mote : while connecting remove the power supply
+
+step 2: add the following in the moteC.nc File to get the printed mesages
+ components SerialPrintfC;
+
+
+
+step 3: add #include"stdio.h" in the mote.nc file
+ 
+ and add 
+ CFLAGS += -I$(TOSDIR)/lib/printf
+ to the Makefile
+
+
+step 4 : add printf statements to get it printed
+
+  printf("current temp is : %d \n",val);
+
+step 5 : set the following config for putty 
+
+	port : /dev/ttyUSB0 or /dev/ttyUSB1
+	Baudrate : 115200
+	Parity : None
+	Bits : 8
+	Stopbits : 1
+	FlowControl : None
+
+Step 6 : The value we are getting is the raw data from ADC and we have to use conversion formula
+
+	val = -39.6 + 0.01*val
+
+ (reading from ADC) * (3300/16384)
+
+
+
+
+References  ::
+printf library
+http://tinyos.stanford.edu/tinyos-wiki/index.php/The_TinyOS_printf_Library
+
+Mote to PC ::
+http://tinyos.stanford.edu/tinyos-wiki/index.php/Mote-PC_serial_communication_and_SerialForwarder
+
+Mote to Mote ::
+http://tinyos.stanford.edu/tinyos-wiki/index.php/Mote-mote_radio_communication
+
+Thread ::
+https://sourceforge.net/p/contiki/mailman/message/31104982/
+
+
+Sensor Conversion Formulas
+https://www.advanticsys.com/wiki/index.php?title=Sensirion%C2%AE_SHT11

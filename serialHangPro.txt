@@ -1,0 +1,21 @@
+
+Ref : https://stackoverflow.com/questions/36051868/no-output-from-pyserial
+
+
+
+import serial
+import sys
+from time import sleep
+
+try:
+  ser = serial.Serial("/dev/ttyUSB0", 115200,timeout=0, parity=serial.PARITY_NONE, 
+                        stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+except:
+  sys.exit("Error connecting device")
+
+while True:
+  queue = ser.inWaiting()
+  if queue > 0:
+    data = ser.read(1000)
+    print data
+  sleep(0.2)
